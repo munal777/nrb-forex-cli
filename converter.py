@@ -50,3 +50,79 @@ class CurrencyConverter:
             
         return False
     
+    def get_available_currencies(self):
+        """
+        Get list of available currencies
+        
+        Returns:
+            list: List of currency code dictionaries
+        """
+        if not self.rates_data:
+            self.load_rates()
+        
+        if not self.rates_data:
+            return []
+        
+        currencies = []
+        for rate in self.rates_data['rates']:
+            currencies.append({
+                'code': rate['code'],
+                'name': rate['currency'],
+                'unit': rate['unit']
+            })
+        
+        return currencies
+
+    def convert(self, amount, target_currency):
+        """
+        Convert NPR to target currency
+        
+        Args:
+            amount (float): Amount in NPR
+            target_currency (str): Target currency code
+            
+        Returns:
+            dict: Conversion result or None if conversion failed
+        """
+        if not self.rates_data:
+            if not self.load_rates():
+                return None
+                
+        # Find the target currency in the rates data
+        currency_data = None
+        for rate in self.rates_data['rates']:
+            if rate.get('code') == target_currency:
+                currency_data = rate
+                break
+                
+        if not currency_data:
+            return None
+            
+        # Extract buying and selling rates and currency unit
+        try:
+            buying_rate = float(currency_data.get('buy', 0))
+            selling_rate = float(currency_data.get('sell', 0))
+            unit = int(currency_data.get('unit', 1))
+            
+            # Convert the amount, considering the unit
+            # For buying rate: NPR to Foreign Currency
+            # For selling rate: NPR to Foreign Currency
+            converted_buying = (amount / buying_rate) * unit if buying_rate else 0
+            converted_selling = (amount / selling_rate) * unit if selling_rate else 0
+            
+            return {
+                'from_currency': 'NPR',
+                'to_currency': target_currency,
+                'amount': amount,
+                'unit': unit,
+                'buying_rate': buying_rate,
+                'selling_rate': selling_rate,
+                'converted_buying': converted_buying,
+                'converted_selling': converted_selling,
+                'updated_at': self.rates_data['updated_at'],
+                'published_on': self.rates_data.get('published_on', ''),
+                'is_offline': self.is_offline
+            }
+        except (ValueError, TypeError) as e:
+            print(f"Error converting currency: {e}")
+            return None
