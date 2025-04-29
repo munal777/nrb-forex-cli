@@ -78,13 +78,3 @@ class NRBapi:
 obj = NRBapi()
 rates = obj.fetch_latest_rates()
 
-# currencies = []
-# for rate in rates['rates']:
-#    currencies.append({
-#                 'code': rate['code'],
-#                 'name': rate['currency'],
-#                 'unit': rate['unit']
-#     })
-   
-# print(currencies)
-

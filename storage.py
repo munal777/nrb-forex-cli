@@ -46,7 +46,6 @@ class Storage:
             dict: Exchange rate data or None if no saved data exists
         """
         if not os.path.exists(self.data_file):
-            print("data_file exist.")
             return None
             
         try:
