@@ -46,6 +46,7 @@ class Storage:
             dict: Exchange rate data or None if no saved data exists
         """
         if not os.path.exists(self.data_file):
+            print("data_file exist.")
             return None
             
         try:
@@ -100,8 +101,8 @@ class Storage:
             return False
             
         try:
-            saved_time = datetime.fromisoformat(data['timestamp'])
-            current_time = datetime.now()
+            saved_time = datetime.datetime.fromisoformat(data['timestamp'])
+            current_time = datetime.datetime.now()
             age = (current_time - saved_time).total_seconds() / 3600  # Age in hours
             
             return age <= max_age_hours
