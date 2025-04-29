@@ -47,5 +47,5 @@ def convert_currency(converter, amount, target):
 
 
 obj = CurrencyConverter()
-# print(display_currencies(obj))
-result = convert_currency(obj, 10, "INR")
+print(display_currencies(obj))
+# result = convert_currency(obj, 10, "INR")

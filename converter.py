@@ -1,5 +1,6 @@
 from api import NRBapi
 from storage import Storage
+import requests
 
 class CurrencyConverter:
     """Core class for converting NPR to foreign currencies"""
@@ -23,20 +24,27 @@ class CurrencyConverter:
          
         # Check if we already have fresh data loaded
         if self.rates_data and not force_refresh:
+            print("fresh data is already loaded")
             return True
         
         if force_refresh or not self.storage.is_data_fresh():
             # Try ro get fresh data from API
+            print("calling fresh data if not fresh data...")
             api_data = self.api.fetch_latest_rates()
 
-            if api_data:
-                self.rates_data = api_data
-                self.is_offline = False
-                return True
+            try:
+                if api_data:
+                    self.rates_data = api_data
+                    self.storage.save_rates(api_data)  # This saves to both current and history
+                    self.is_offline = False
+                    return True
+            except Exception as e:
+                print(f"Could not connect to NRB API: {e}")
 
-        # Fall back to stored data   
+        # Use stored data because we couldn't connect or because data is still fresh
         stored_data = self.storage.load_rates()
         if stored_data:
+            print("calling fresh stored_data..")
             self.rates_data = stored_data
             self.is_offline = True
             return True
@@ -44,6 +52,7 @@ class CurrencyConverter:
         # Try loading from history as last resort
         history_data = self.storage.load_latest_from_history()
         if history_data:
+            print("calling history data...")
             self.rates_data = history_data
             self.is_offline = True
             return True
@@ -58,6 +67,7 @@ class CurrencyConverter:
             list: List of currency code dictionaries
         """
         if not self.rates_data:
+            print("get_available_currencies: load_rate()")
             self.load_rates()
         
         if not self.rates_data:
@@ -126,3 +136,16 @@ class CurrencyConverter:
         except (ValueError, TypeError) as e:
             print(f"Error converting currency: {e}")
             return None
+    
+    def _check_internet_coonection(self):
+        """
+        Check if there is an active internet connection by trying to reach NRB
+        
+        Returns:
+            bool: True if internet is available, False otherwise
+        """
+        try:
+            requests.head("https://www.nrb.org.np", timeout=2)
+            return True
+        except requests.RequestException:
+            return False
