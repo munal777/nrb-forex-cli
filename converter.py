@@ -24,14 +24,12 @@ class CurrencyConverter:
          
         # Check if we already have fresh data loaded
         if self.rates_data and not force_refresh:
-            print("fresh data is already loaded")
             return True
         
         has_internet = self._check_internet_coonection()
 
         if has_internet:
             # Try ro get fresh data from API
-            print("calling fresh data if not fresh data...")
             api_data = self.api.fetch_latest_rates()
 
             try:
@@ -42,9 +40,7 @@ class CurrencyConverter:
                     return True
             except Exception as e:
                 print(f"Could not connect to NRB API: {e}")
-        elif not has_internet:
-            print("No internet connection detected. Using offline data.")
-
+        
         # Use stored data because we couldn't connect or because data is still fresh
         stored_data = self.storage.load_rates()
         if stored_data:
@@ -147,7 +143,7 @@ class CurrencyConverter:
         """
         try:
             requests.head("https://www.nrb.org.np", timeout=2)
+            
             return True
         except requests.RequestException:
-            print("catched")
             return False
