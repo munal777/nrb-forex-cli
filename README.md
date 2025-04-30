@@ -44,7 +44,7 @@ nprxchange -r
 nprxchange -i
 ```
 
-### Command Line Arguments
+### 🔍 Command Line Arguments
 
 | Argument | Short | Description |
 |----------|-------|-------------|
