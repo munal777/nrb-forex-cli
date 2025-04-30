@@ -44,23 +44,6 @@ nprxchange -r
 nprxchange -i
 ```
 
-## 🧑‍💻 Contributing
-Contributions are welcome! To contribute:
-- Fork this repository
-- Create your feature branch (git checkout -b feature-name)
-- Commit your changes (git commit -m 'Add feature')
-- Push to the branch (git push origin feature-name)
-- Open a pull request
-
-Please follow clean code practices and test your changes before submitting.
-
-# NPRXchange
-
-[![PyPI version](https://img.shields.io/pypi/v/nprxchange.svg)](https://pypi.org/project/nprxchange/)
-[![Python Versions](https://img.shields.io/pypi/pyversions/nprxchange.svg)](https://pypi.org/project/nprxchange/)
-
-A command-line tool for converting Nepalese Rupees (NPR) to foreign currencies using official Nepal Rastra Bank exchange rates.
-
 ### Command Line Arguments
 
 | Argument | Short | Description |
@@ -71,11 +54,23 @@ A command-line tool for converting Nepalese Rupees (NPR) to foreign currencies u
 | `--refresh` | `-r` | Force refresh rates from the NRB API |
 | `--interactive` | `-i` | Launch interactive mode to select currency |
 
+## 🧑‍💻 Contributing
+Contributions are welcome! To contribute:
+- Fork this repository
+- Create your feature branch (git checkout -b feature-name)
+- Commit your changes (git commit -m 'Add feature')
+- Push to the branch (git push origin feature-name)
+- Open a pull request
+
+Please follow clean code practices and test your changes before submitting.
+
 ## License
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 ## 👤 Author
 Name: Munal Poudel
+
 Email: munalpoudel3@gmail.com
+
 GitHub: github.com/munal777
 
