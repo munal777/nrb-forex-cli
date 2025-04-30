@@ -1,6 +1,6 @@
 import argparse
 import sys
-from converter import CurrencyConverter
+from .converter import CurrencyConverter
 from InquirerPy import inquirer
 from rich.console import Console
 from rich.table import Table

@@ -1,10 +1,14 @@
 from setuptools import setup, find_packages
+import pathlib
 
+long_description = pathlib.Path("README.md").read_text(encoding="utf-8")
 
 setup(
     name="nprxchange",
-    version="0.1.0",
+    version="0.1.1",
     description="Nepal Rastra Bank Currency Converter",
+    long_description= long_description,
+    long_description_content_type="text/markdown",
     author="Munal Poudel",
     author_email="munalpoudel3@gmail.com",
     packages=find_packages(),

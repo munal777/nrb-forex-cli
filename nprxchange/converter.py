@@ -1,5 +1,5 @@
-from api import NRBapi
-from storage import Storage
+from .api import NRBapi
+from .storage import Storage
 import requests
 
 class CurrencyConverter:
