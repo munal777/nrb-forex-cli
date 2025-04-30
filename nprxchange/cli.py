@@ -1,155 +1,3 @@
-# import argparse
-# import sys
-# from converter import CurrencyConverter
-# from InquirerPy import inquirer
-
-# def display_currencies(converter):
-#     """Display available currencies"""
-#     currencies = converter.get_available_currencies()
-
-#     if not currencies:
-#         print("Failed to retrieve currency list. Check your internet connection.")
-#         return
-    
-#     print("\nAvailable currencies:")
-#     print("-" * 40)
-#     print(f"{'Code':<10} {'Currency':<40}")
-#     print("-" * 40)
-    
-#     for currency in currencies:
-#         print(f"{currency['code']:<10} {currency['name']:<40}")
-#     print("-" * 40)
-
-
-# def choose_currency_menu(converter):
-#     currencies = converter.get_available_currencies()
-
-#     if not currencies:
-#         print("❌ Failed to fetch currencies.")
-#         return
-    
-#     choices = [f"{c['code']} - {c['name']}" for c in currencies]
-    
-#     selected = inquirer.select(
-#         message="Select a currency",
-#         choices=choices,
-#         pointer="→"
-#     ).execute()
-    
-#     selected_code = selected.split(" - ")[0]
-
-#     selected_currency = next(c for c in currencies if c['code'] == selected_code)
-#     selected_unit = selected_currency['unit']
-#     result = converter.convert(selected_unit, selected_code)
-
-#     if not result:
-#         print("❌ Could not fetch conversion data.")
-#         return
-
-#     print("\n💱 Currency Details")
-#     print("-" * 40)
-#     print(f"Currency Code : {selected_code}")
-#     print(f"Buying Rate   : {selected_unit} {selected_code} = {result['buying_rate']:.4f} NPR")
-#     print(f"Selling Rate  : {selected_unit} {selected_code} = {result['selling_rate']:.4f} NPR")
-#     print("-" * 40)
-
-
-
-# def convert_currency(converter, amount, target):
-#     """Convert and display currency conversion"""
-#     result = converter.convert(amount, target)
-
-#     if not result:
-#         print(f"Failed to convert {amount} NPR to {target}.")
-#         print("Please check your internet connection or try again later.")
-#         return
-#     print(result["to_currency"])
-
-#     print("\nCurrency Conversion Result")
-#     print("-" * 60)
-#     if result['is_offline']:
-#         print("⚠️  USING OFFLINE DATA - rates may not be current")
-#         print(f"Last updated: {result['updated_at']}")
-#         print(f"Last published: {result['published_on']}")
-#     else:
-#         print("✅ Using current online data")
-#         print(f"Updated: {result['updated_at']}")
-#         print(f"Published: {result['published_on']}")
-
-#     print("-" * 60)
-#     print(f"Amount: {amount:.2f} NPR")
-#     print(f"Target Currency: {result['to_currency']} (per {result['unit']} unit{'s' if result['unit'] > 1 else ''})")
-#     print("-" * 60)
-#     print(f"Buying Rate: {result['unit']} {result['to_currency']} = {result['buying_rate']:.4f} NPR")
-#     print(f"Selling Rate: {result['unit']} {result['to_currency']} = {result['selling_rate']:.4f} NPR")
-#     print("-" * 60)
-#     print(f"Converted Amount (Buying): {result['converted_buying']:.4f} {result['to_currency']}")
-#     print(f"Converted Amount (Selling): {result['converted_selling']:.4f} {result['to_currency']}")
-
-
-
-
-# def main():
-#     """Main entry point for CLI"""
-#     parser = argparse.ArgumentParser(
-#         description="Convert NPR to foreign currencies using Nepal Rastra Bank exchange rates"
-#     )
-
-#     parser.add_argument(
-#         "-l", "--list",
-#         action="store_true",
-#         help="List all available currencies"
-#     )
-
-#     parser.add_argument(
-#         "-a", "--amount",
-#         type=float,
-#         help="Amount in NPR to convert"
-#     )
-
-#     parser.add_argument(
-#         "-t", "--to",
-#         type=str,
-#         help="Target currency code (e.g., USD, EUR, INR)"
-#     )
-
-#     parser.add_argument(
-#         "-f", "--force-refresh",
-#         action="store_true",
-#         help="Force refresh from the NRB API instead of using cached data"
-#     )
-
-#     parser.add_argument(
-#         "-c", "--choose",
-#         action="store_true",
-#         help="Choose a currency from a list and view its rates"
-#     )
-
-#     args = parser.parse_args()
-#     converter = CurrencyConverter()
-
-#     if args.force_refresh:
-#         print("🔄 Forcing refresh from NRB API...")
-#         converter.load_rates(force_refresh=True)
-#         return
-    
-#     if args.list:
-#         display_currencies(converter)
-#         return
-    
-#     if args.choose:
-#         choose_currency_menu(converter)
-#         return
-    
-#     if args.amount is not None and args.to:
-#         convert_currency(converter, args.amount, args.to.upper())
-#         return
-
-#     # If no valid options were provided, show help
-#     parser.print_help()
-
-# if __name__ == "__main__":
-#     main()
 import argparse
 import sys
 from converter import CurrencyConverter
@@ -157,7 +5,6 @@ from InquirerPy import inquirer
 from rich.console import Console
 from rich.table import Table
 from rich.panel import Panel
-from rich.text import Text
 from rich import box
 
 # Initialize Rich console for attractive output
@@ -168,7 +15,7 @@ def display_currencies(converter):
     currencies = converter.get_available_currencies()
 
     if not currencies:
-        console.print(Panel("❌ Failed to retrieve currency list. Check your internet connection.", 
+        console.print(Panel.fit("❌ Failed to retrieve currency list. Check your internet connection.", 
                            title="Error", border_style="red"))
         return
     
@@ -187,7 +34,7 @@ def choose_currency_menu(converter):
     currencies = converter.get_available_currencies()
 
     if not currencies:
-        console.print(Panel("❌ Failed to fetch currencies.", title="Error", border_style="red"))
+        console.print(Panel.fit("❌ Failed to fetch currencies.", title="Error", border_style="red"))
         return
     
     choices = [f"{c['code']} - {c['name']}" for c in currencies]
@@ -205,7 +52,7 @@ def choose_currency_menu(converter):
     result = converter.convert(selected_unit, selected_code)
 
     if not result:
-        console.print(Panel("❌ Could not fetch conversion data.", title="Error", border_style="red"))
+        console.print(Panel.fit("❌ Could not fetch conversion data.", title="Error", border_style="red"))
         return
 
     details = [
@@ -236,7 +83,7 @@ def convert_currency(converter, amount, target):
         header_style = "yellow"
     
     # Format timestamps
-    updated_at = result.get('updated_at', 'Unknown')
+    # updated_at = result.get('updated_at', 'Unknown')
     published_on = result.get('published_on', 'Unknown')
     
     # Create main table
@@ -246,14 +93,13 @@ def convert_currency(converter, amount, target):
 
     # Add status row with appropriate styling
     table.add_row("Status", f"[{header_style}]{header_text}[/{header_style}]")
-    table.add_row("Updated", updated_at)
-    table.add_row("Published", published_on)
+    # table.add_row("Updated", updated_at)
+    table.add_row("Published Rate Date", published_on)
     table.add_row("Amount", f"{amount:.2f} NPR")
     table.add_row("Target Currency", f"{result.get('to_currency')} (per {result.get('unit')} unit{'s' if result.get('unit', 1) > 1 else ''})")
     table.add_row("Buying Rate", f"{result.get('unit')} {result.get('to_currency')} = {result.get('buying_rate', 0):.4f} NPR")
     table.add_row("Selling Rate", f"{result.get('unit')} {result.get('to_currency')} = {result.get('selling_rate', 0):.4f} NPR")
-    
-    # Add conversion results with highlighting
+    table.add_section()
     table.add_row("Converted Amount (Buying)", f"[bold green]{result.get('converted_buying', 0):.4f} {result.get('to_currency')}[/bold green]")
     table.add_row("Converted Amount (Selling)", f"[bold blue]{result.get('converted_selling', 0):.4f} {result.get('to_currency')}[/bold blue]")
     
@@ -317,13 +163,6 @@ def main():
 
     args = parser.parse_args()
     converter = CurrencyConverter()
-
-    # # Print header
-    # console.print(Panel.fit(
-    #     "[bold cyan]Nepal Rastra Bank[/bold cyan] [yellow]Currency Converter[/yellow]", 
-    #     subtitle="CLI Tool", 
-    #     border_style="blue"
-    # ))
 
     if args.refresh:
         refresh_rates(converter)
